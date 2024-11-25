@@ -1,0 +1,38 @@
+# 忽略所有.log文件
+*.log
+ 
+# 忽略所有.tmp文件
+*.tmp
+ 
+# 忽略所有node_modules目录
+node_modules/
+ 
+# 忽略所有bower_components目录
+bower_components/
+ 
+# 忽略所有.idea目录（如果你使用的是WebStorm或类似的IDE）
+.idea/
+ 
+# 忽略所有.vscode目录（如果你使用的是Visual Studio Code）
+.vscode/
+ 
+# 忽略所有dist目录（通常用于存放构建后的项目）
+dist/
+ 
+# 忽略所有的本地安装包
+package-lock.json
+ 
+# 忽略所有的日志文件和目录
+logs/
+ 
+# 忽略所有的环境变量文件
+.env
+ 
+# 忽略特定文件
+node_modules/
+ 
+# 忽略所有的编译后的文件
+*.com
+ 
+# 忽略所有的可执行文件
+*.exe
