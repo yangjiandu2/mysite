@@ -1,6 +1,5 @@
 // 这一层负责和数据库打交道
 
-const { where } = require('sequelize')
 const adminModel = require('./model/adminModel')
 
 // 登录
@@ -15,6 +14,7 @@ module.exports.loginDao = async function (loginInfo) {
     })
 }
 
+// 更新管理员信息
 module.exports.updateAdminDao = async function(newAccountInfo){
    return await adminModel.update(newAccountInfo,{
         where:{

@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
 const { ValdationError } = require("../utils/errors")
 
 const { loginDao, updateAdminDao } = require('../dao/adminDao')
+const { formatResponse } = require("../utils/tool")
 
 // 登录
 module.exports.loginService = async function (loginInfo) {
@@ -48,15 +49,19 @@ module.exports.updateAdminService = async function (accountInfo) {
     if (adminInfo && adminInfo.dataValues) {
         // 更新数据
         const newPassword = md5(accountInfo.loginPwd)
-        const result = await updateAdminDao({
+        await updateAdminDao({
             name: accountInfo.name,
             loginId: accountInfo.loginId,
             loginPwd: newPassword
         })
-        console.log("🚀 ~ result:", result)
+        return formatResponse(0,'',{
+            loginId:accountInfo.loginId,
+            name:accountInfo.name,
+            id:adminInfo.dataValues.id
+        })
 
     } else {
-        // 账号/密码输入不正确
+        // 账号/密码输入不正确,抛出自定义错误
         throw new ValdationError("账号或密码输入不正确")
     }
 }
