@@ -6,8 +6,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const { expressjwt: jwt } = require("express-jwt");
-const ServiceError = require('./utils/errors')
-const { ForbiddenError, UnknownError} = ServiceError
+const { ForbiddenError, UnknownError, ServicerError} = require('./utils/errors')
 
 const md5 = require('md5');
 const session = require("express-session")
@@ -21,16 +20,19 @@ require('./dao/db')
 // 先做数据库链接再 引入路由
 const adminRouter = require('./routes/admin');
 const captchaRouter = require('./routes/captcha');
+const uploadRouter = require('./routes/upload');
 const bannerRouter = require('./routes/banner');
+const blogTypeRouter = require('./routes/blogType');
+const blogRouter = require('./routes/blog');
 
 
 // 创建服务器实例
 const app = express();
 
 app.use(session({
-  secret:process.env.SESSION_SECRET,
-  resave:true,
-  saveUninitialized:true
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true
 }))
 
 // 使用各种路由中间件
@@ -58,6 +60,9 @@ app.use(jwt({
 app.use('/admin', adminRouter);
 app.use('/res/captcha', captchaRouter);
 app.use('/banner', bannerRouter);
+app.use('/api/upload', uploadRouter);
+app.use('/api/blogType', blogTypeRouter);
+app.use('/api/blog', blogRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -66,21 +71,21 @@ app.use(function (req, res, next) {
 
 // 错误处理 一旦发生错误进入这里
 app.use(function (err, req, res, next) {
-  if(err){
+  if (err) {
     const { message } = err
     console.log("🚀 ~ message:", message)
   }
   // 说明是token 无效 验证错误
   if (err.name === "UnauthorizedError") {
     res.send(new ForbiddenError('未登录，或者登录失效').toResponseJSON())
-  }else if (err.constructor === ServiceError.ValdationError) {
+  } else if (err instanceof ServicerError) {
     res.send(err.toResponseJSON())
   } else {
     res.send(new UnknownError().toResponseJSON())
   }
 
 });
- 
+
 
 
 module.exports = app;

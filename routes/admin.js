@@ -7,7 +7,7 @@ const { ValdationError } = require('../utils/errors');
 // 登录
 router.post('/login', async function (req, res, next) {
     // 首先应该有验证码验证
-    if(req.body.captcha.toLowerCase() !== req.session.captcha.toLowerCase()){
+    if(req.body.captcha.toLowerCase() !== req.session.captcha?.toLowerCase()){
         // 用户输入验证码不正确
         throw new ValdationError('验证码错误')
     }

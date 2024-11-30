@@ -49,8 +49,8 @@ exports.ValdationError = class extends ServicerError {
 
 // 无资源错误
 exports.NotFoundError = class extends ServicerError {
-    constructor() {
-        super('not found', 401)
+    constructor(message) {
+        super(message || 'not found', 401)
     }
 }
 
@@ -61,5 +61,4 @@ exports.UnknownError = class extends ServicerError {
     }
 }
 
-
-module.exports.ServicerError
+module.exports.ServicerError = ServicerError

@@ -4,8 +4,16 @@ const sequelize = require('./dbConnect') // 数据库链接实例
 
 const adminModel = require('./model/adminModel') // 数据库模型
 const bannerModel = require('./model/bannerModel')
+const blogTypeModel = require('./model/blogTypeModel')
+const blogModel = require('./model/blogModel')
 
 async function init() {
+    // 定义模型之间的关联
+
+    // 博客和博客分类之间的关联
+    blogTypeModel.hasMany(blogModel, { foreignKey: "categoryId", targetKey: 'id' })
+    blogModel.belongsTo(blogTypeModel, { foreignKey: "categoryId", targetKey: 'id', as: "category" })
+
     // 将数据模型和表进行同步
     await sequelize.sync({
         alter: true
